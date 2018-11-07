@@ -1,0 +1,26 @@
+{
+  "name": "rottenoranges",
+  "version": "1.0.0",
+  "description": "A Movie Chit Chat Site",
+  "main": "index.js",
+  "engines": {
+    "node": "8.1.1",
+    "npm": "5.0.3"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbejar93/RottenOranges.git"
+  },
+  "author": "Carlos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cbejar93/RottenOranges/issues"
+  },
+  "homepage": "https://github.com/cbejar93/RottenOranges#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
