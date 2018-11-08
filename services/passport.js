@@ -1,8 +1,17 @@
+const keys = require("../config/keys.js");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const keys = require("../config/keys.js");
+const mongoose = require("mongoose");
 
-
+const User = mongoose.model("users");
+// This created a unique id for the user
+passport.serializeUser((user,done)=>{
+        done(null, user.id);
+})
+// this decodes the unique id sent from the browser
+passport.deserializeUser(()=>{
+    
+})
 
 
 passport.use(new GoogleStrategy({
@@ -10,8 +19,16 @@ passport.use(new GoogleStrategy({
     clientSecret: keys.googleClientSecret,
     callbackURL: "/auth/google/callback"
 }, (accessToken, refreshToken, profile, done) => {
-    console.log( "access Token", accessToken);
-    console.log("refresh token", refreshToken);
-    console.log("profile", profile);
+    User.findOne({googleId: profile.id})
+        .then ((oldUser)=>{
+            if (oldUser){
+                done(null, oldUser)
+            }else{
+                (new User ({googleId: profile.id}))
+                    .save()
+                    .then(user=>done(null,user));
+        }
+    })
+
 }
 ));
