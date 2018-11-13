@@ -1,4 +1,5 @@
 const keys = require("../config/keys.js");
+const cookieSession = require('cookie-session');
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
@@ -9,8 +10,11 @@ passport.serializeUser((user,done)=>{
         done(null, user.id);
 })
 // this decodes the unique id sent from the browser
-passport.deserializeUser(()=>{
-    
+passport.deserializeUser((id, done)=>{
+    User.findById(id)
+        .then(user=>{
+            done(null, user);
+        })
 })
 
 
