@@ -11,6 +11,10 @@ export default {
 
     getMovie: function(){
         return axios.get("/api/articles");
+    },
+    
+    postComment: function(body, id){
+        return axios.post("api/comment/"+id , body)
     }
 
 

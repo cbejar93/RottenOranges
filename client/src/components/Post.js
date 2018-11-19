@@ -1,123 +1,124 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import API from "./../utils/API";
-import Input from "./Input"; 
-// import Display from "./Display";
+import React, { Component } from "react";
+import API from "../utils/API";
+import Form from "./Form";
+import Display from "./Display";
+// import ArticleCard from "./components/ArticleCard";
+// import SavedCard from "./components/SavedCard";
 
+class Nyt extends Component {
+  constructor () {
+    super();
+    this.state = {
+      movies: [],
+      savedArticles: [],
+      title: "",
+      click: 0
+     
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
 
+  saveMovie= (event)=> {
+    event.preventDefault();
+    console.log(event.target.value);
+    this.setState({click: 0});
+    console.log("hello");
+    this.movieCreator();
+    // let i = event.target.value;
+    // this.hellothere(i);
+  }
 
-class Post extends Component {
-    constructor (){
-        super();
-        // This is where I set the state for user input and data being passed into components
-        this.state = {
-            movies: [],
-            title: ""    
-        };
-        this.handleChange = this.handleChange.bind(this);
+//   removeArticle = (event) => {
+//     event.preventDefault();
+//     console.log(event.target.value);
+//     let id = event.target.value;
+//     this.helloagain(id)
+//   }
 
-    }
+//   helloagain = (x) => {
+//     console.log(x);
+//     API.deleteArticle(x);
+//   }
 
-//    renderMovies(){
-//        switch(this.state.movies){
-//            case false:
-//                 return;
-//             default:
-//                 return(
-//                     <div>
+  movieCreator = ( ) => {
+    // console.log(x);
+    let saveMovie = this.state.movies;
+    let title = saveMovie.Title;
+    let plot = saveMovie.Plot;
+    let poster = saveMovie.Poster;
+    let year = saveMovie.Year
+    let bodyreq = {title, plot, poster, year};
+    console.log(bodyreq);
+    API.createMovie(bodyreq);
+  }
 
-//                          <h1>Hello there</h1>
-//                         {/* {props.movies.map((movie, index)=>( */}
-//                         <div className="card horizontal">
-//                                 <h2 className="header">{this.state.Title}</h2>
-//                                 <div className="card-image">
-//                                 <img src={this.state.movies.Poster}/>
-//                             </div>
-//                             <div className="card-stacked">
-//                                 <div className="card-content">
-//                                     <p>{this.state.movies.Plot}</p>
-//                                 </div>
-//                                 <div className="card-action">
-//                                     <p>{this.state.movies.Year}</p>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                 </div>
-//                 );
-//             // default: 
-//             //         return;
+//   databaseArticles = () => {
+//     API.getSavedArticles()
+//     .then(res =>{
+//     this.setState({savedArticles: res.data})
+//     console.log(this.state.savedArticles);
+//     })
+//     .catch(err =>{console.log(err)})
+//   }
 
-//        }
-//    }
-// my code from this week.
-    // handleInput = event =>{
-    //     // console.log(event.target.value);
-    //     this.setState({title: [event.target.value]});
-    //     console.log(this.state.title);
-    // }
+  handleFormSubmit= event => {
+      event.preventDefault();
+      this.setState({[event.target.name]: [event.target.value]});
+      this.setState({click: 1});
+      console.log(this.state.title);
+      this.loadMovies();
+      this.setState({title: ""});
+  
+  }
 
-// from nyt react
-    handleChange = (event) => {
-        console.log(event.target.value);
-        console.log("hello")
-        console.log(event.target.name);
-        this.setState({[event.target.name]: [event.target.value]});
-        // console.log(this.state.edate);
-    }
+  handleChange = event => {
+      console.log(event.target.value);
+      console.log(event.target.name)
+      this.setState({[event.target.name]: [event.target.value]});
+  }
 
-    searchOMDb = (event) => {
-        event.preventDefault();
-        console.log("hello");
-        document.getElementById("title").value= "";
-        API.sendOMDB(this.state.title)
-        .then(res=>{
-            console.log(res);
-            this.setState({movie: res.data});
-            console.log(`${this.state.movie.Title} this is the movie stored in the state.` )
-        })
-    }
+  loadMovies = () => {
+    API.sendOMDB(this.state.title)
+    .then(res=>{
+        console.log(`${res} this one`);
+        this.setState({movies: res.data});
+        console.log(`${this.state.movies.Title} this is the movie stored in the state.` );
+        console.log(`${this.state.movies} movie array`)
+    })
+  }
 
-    saveArticle= (event)=> {
-        event.preventDefault();
-        console.log(event.target.value);
-        // let i = event.target.value;
-        // this.hellothere(i);
-      }
+  render() {
+    return (
+      <div className="App">
+        <div className="container">
+            <div className="row">
+                <div className="col">
 
-    // componentDidMount(){
-    //     const self = this;
-    //     let searched = this.searchOMDb();
-    //     self.setState({movie: searched});
-
-    // }
-
-    
-
-    render () {
-        
-        return (
-            <div className="container">
-                 <div className="row">
-                    <div className="col">
-                        <Input 
-                            handleChange = {this.handleChange}
-                            formSubmit = {this.searchOMDb}
-                        />
-                    </div>
-                   
-                    
+                    <Form
+                    handleChange= {this.handleChange}
+                    handleFormSubmit = {this.handleFormSubmit}
+                    />
                 </div>
+                <div className="col">
+          
+          {this.state.click > 0 ?  <Display
+               movies = {this.state.movies}
+               saveMovie = {this.saveMovie}
+            />:<div></div> }
+            {/* <Display
+               movies = {this.state.movies}
+               saveMovie = {this.saveMovie}
+            />  */}
 
             </div>
-        );
-    }
+            
 
-
+          
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-function mapStateToProps (state){
-    return { auth: state.auth }
-}
-
-export default connect(mapStateToProps)(Post);
-
+export default Nyt;
