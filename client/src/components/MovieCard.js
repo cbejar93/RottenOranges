@@ -33,7 +33,7 @@ const MovieCard = (props) => {
                             <p>{movie.year}</p>
                         </div>
                         <div className="col">
-                            <button data-target="modal1" value={movie._id} onClick={props.postID} class="btn modal-trigger">Modal</button>
+                            {/* <button data-target="modal1" value={movie._id} onClick={props.postID} class="btn modal-trigger">Modal</button> */}
 
                         </div>
                     </div>  
