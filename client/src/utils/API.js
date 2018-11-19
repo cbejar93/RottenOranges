@@ -7,6 +7,10 @@ export default {
     createMovie: function(movieData){
         // console.log(`${movieData.title} this is from front end api `);
         return axios.post("/api/articles", movieData);
+    },
+
+    getMovie: function(){
+        return axios.get("/api/articles");
     }
 
 

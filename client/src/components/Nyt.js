@@ -25,6 +25,7 @@ class Nyt extends Component {
   saveMovie= (event)=> {
     event.preventDefault();
     console.log(event.target.value);
+    this.setState({click: 0});
     console.log("hello");
     this.movieCreator();
     // let i = event.target.value;
